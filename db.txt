@@ -1,0 +1,56 @@
+-- SQLiteFront SQL Dump
+-- version 0.5.1
+
+-- Database: /db/dinner.db
+-- SQLite version: 2.8.17
+-- PHP version: 5.2.6
+-- Date: 2010-12-19 09:44
+
+
+BEGIN TRANSACTION;
+
+
+-- Schema from categories
+
+DROP TABLE 'categories';
+create table categories(
+                categoryid integer primary key,
+                restaurantid integer,
+                title varchar(200)
+                );
+
+
+-- Schema from books
+
+DROP TABLE 'books';
+CREATE TABLE 'books' (
+	'bookid' integer PRIMARY KEY, 
+	'title' varchar(200), 
+	'detail' text, 
+	'timeline' datetime
+);
+
+
+-- Schema from restaurants
+
+DROP TABLE 'restaurants';
+CREATE TABLE 'restaurants' (restaurantid integer primary key, title varchar(200), tel varchar(200), addr varchar(200), boss varchar(200), mark text);
+
+
+-- Schema from users
+
+DROP TABLE 'users';
+CREATE TABLE 'users' (userid INTEGER PRIMARY KEY, useren varchar(200), usercn varchar(200), password char(32), level integer int(4));
+
+
+-- Schema from orders
+
+DROP TABLE 'orders';
+CREATE TABLE 'orders' (orderid integer primary key, bookid integer, restaurantid integer, payerid integer, payer varchar(100), status integer(4), day date, timeline datetime, itemnum integer, quantity integer, total_amount decimal(10,3), final_amount double, detail text, users_detail text, users_count INTEGER, mark text);
+
+
+-- Schema from items
+
+DROP TABLE 'items';
+CREATE TABLE 'items' (itemid integer primary key, restaurantid varchar(200), title varchar(200), categoryid integer, price double, disable integer, detail text, used int(10), gooded int(10), baded int(10));
+COMMIT;

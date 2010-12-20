@@ -1,0 +1,20 @@
+<div class="p10">
+	<div class="riki_title">
+	<div class="float_right">
+		<?php if(userHelper::islogin()):?><a href="javascript:show_float_box('?m=menu&a=add_res');void(0)">新建餐厅</a><?php endif;?>
+	</div>
+	<h4>餐厅</h4>
+	</div>
+	<div>
+	<h3>餐厅列表</h3>
+	<?php foreach($list as $resi):?>
+		<div> <?=$resi['title']?> <a href="?m=menu&a=view_res&restaurantid=<?=$resi['restaurantid']?>">查看</a> &nbsp;&nbsp; 
+		<?php if(userHelper::islogin()):?>
+			<a href="javascript:show_float_box('?m=menu&a=modify_res&restaurantid=<?=$resi['restaurantid']?>');void(0)">修改</a>&nbsp;&nbsp; 
+			<a href="javascript:show_float_box('?m=menu&a=remove_confirm_res&restaurantid=<?=$resi['restaurantid']?>');void(0)" >删除</a>
+		<?php endif;?>
+		</div>
+	<?php endforeach;?>
+	</div>
+	
+</div>

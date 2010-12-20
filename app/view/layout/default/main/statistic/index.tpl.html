@@ -1,0 +1,94 @@
+<style>
+.tabstatistic td{width:100px}
+</style>
+<div class="p10">
+	<div class="box_title">
+		<div class="riki_title">
+			 统计
+		</div>
+	</div>
+	<div class="box_container">
+	<form action="" method="post" id="form1">
+		<div class="formline">
+			<label>选择日期:</label>
+			<b>从:</b>&nbsp;
+			 <input type="text" name="fromdate" id="fromdate" value="<?=$fromdate?>" style="width:80px"/>
+			<span ></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<b>到:</b>&nbsp;
+			 <input type="text" name="todate" id="todate" value="<?=$todate?>" style="width:80px"/>
+			 
+		</div>
+		<div class="formline">
+			<label>帐本:</label>
+			<?php foreach($books as $book):?>
+				<input type="checkbox" name="check_bookid[]" value="<?=$book['bookid']?>" /> <?=$book['title']?>  &nbsp;&nbsp;&nbsp;&nbsp;
+			<?php endforeach;?>
+		</div>
+		<div class="formline">
+			<label>餐厅:</label>
+			<?php foreach($res as $resi):?>
+				<input type="checkbox" name="check_restaurantid[]" value="<?=$resi['restaurantid']?>" /> <?=$resi['title']?>  &nbsp;&nbsp;&nbsp;&nbsp;
+			<?php endforeach;?>
+		</div>
+		
+		<div>
+			<select name="status">
+				<option value="" >是否结算</option>
+				<option value="0" <?php if($status=='0'):?> selected='true'<?php endif; ?> >未结算</option>
+				<option value="1" <?php if($status=='1'):?> selected='true'<?php endif; ?>>已结算</option>
+			</select>
+			<input type="submit" value="查" />  
+		</div>
+	</form>
+		<div >
+		<?php if($reorders):?>
+			<div class="riki_title">
+				统计结果
+			</div>
+			<div >
+				<table class="tabstatistic">
+					<tr>
+						<th width="100">日期</th>
+						<?php foreach($reBooks as $bookid):?>
+						<th width="100"><?=$books[$bookid]['title']?></th>
+						<?php endforeach;?>
+					</tr>
+					<?php  
+					foreach($reDays as $day):?>
+					<tr>
+						<th><?=$day?></th>
+						<?php foreach($reBooks as $bookid):?>
+						<td>
+							<?php if($reorders[$bookid][$day]): foreach($reorders[$bookid][$day] as $order): 
+								$final_amount_total[$bookid]+=$order['final_amount'];
+								$orders_num_total[$bookid]++;
+							?>
+						 		<?=$order['final_amount']?>
+						 	<?php endforeach; endif;?>
+						 </td>
+						<?php endforeach;?>
+					</tr>
+					<?php endforeach;?>
+					<tr>
+						<th>总数:</th>
+						<?php foreach($reBooks as $bookid):?>
+							<th><?=$orders_num_total[$bookid]?></th>
+						<?php endforeach;?>			
+					</tr>
+					<tr>
+						<th>总计:</th>
+						<?php foreach($reBooks as $bookid):?>
+							<th><?=$final_amount_total[$bookid]?></th>
+						<?php endforeach;?>			
+					</tr>
+			</div>
+		<?php endif;?>
+		</div>
+	</div>
+</div>
+<script src="static/script/datepicker.js" type="text/javascript"></script>
+<script >
+var fromdate=new DatePicker($('fromdate'),{'format':'Y-m-d',inputOutputFormat: 'Y-m-d'});
+var todate=new DatePicker($('todate'),{'format':'Y-m-d',inputOutputFormat: 'Y-m-d'});
+
+</script>

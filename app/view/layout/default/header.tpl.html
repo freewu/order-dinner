@@ -1,0 +1,28 @@
+<?php $menu = menu(); ?>
+<div id="top_nav">
+<div id="settings">
+	 <?php if(userHelper::islogin()):?>
+	 	<a href="?m=user&a=logout">登出</a> | <a href="?m=user">人员</a> | <a href="?m=books">帐本</a>
+	 <?php else:?>	
+	 	<a href="?m=user&a=login">登录</a>
+	 <?php endif;?>
+	 
+</div>
+<div id="logo"><span><?=c('site_name')?></span> - <?=c('site_desp')?></div>
+
+<ul class="nav">	
+<?php 
+$hit = false;
+?>
+<?php $tabs = tab(); foreach( $tabs as $tab ): ?>
+<?php if( $tab['m'] == g('m') && ( $tab['a'] == '' ||   $tab['a'] == g('a') )  ): ?>
+		<li class="cur"><a href="?m=<?=g('m')?>&a=<?=$tab['a']?>"><?=$tab['t']?></a></li>
+		<?php $hit = true; ?>
+<?php else: ?>
+		<li><a href="?m=<?=$tab['m']?>&a=<?=$tab['a']?>"><?=$tab['t']?></a></li>
+<?php endif; ?>	
+<?php endforeach; ?>
+
+<?php if( !$hit ): ?><li class="cur"><a href="?m=<?=g('m')?>&a=<?=g('a')?>">其他</a></li><?php endif; ?>	
+</ul>	
+</div>	

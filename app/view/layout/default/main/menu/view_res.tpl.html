@@ -1,0 +1,76 @@
+<div class="p10">
+	<div class="riki_title">
+	<div class="float_right">
+		<?php if(userHelper::islogin()):?><a href="javascript:show_float_box('?m=menu&a=add_cat&restaurantid=<?=$restaurantid;?>');void(0)">新建分类</a><?php endif;?>
+	</div>
+	<h4>餐厅菜谱详细</h4>
+	</div>
+	<div>
+	
+	<h3>餐厅详细</h3>
+		<div>
+			<?=$res['title']?>,<?=$res['tel']?>,<?=$res['addr']?>,<?=$res['boss']?>
+		</div>
+	</div>
+	<br />
+	<div>
+	<div class="riki_title">
+		<h3>菜谱分类</h3>
+	</div>
+			<?php foreach($cats as $cat):?>
+				<div class="rescat">
+					<div class="float_right">
+					<?php if(userHelper::islogin()):?>
+					<a href="javascript:show_float_box('?m=menu&a=modify_cat&categoryid=<?=$cat['categoryid']?>');void(0)">修改</a>&nbsp;&nbsp; 
+					<a href="javascript:show_float_box('?m=menu&a=remove_confirm_cat&categoryid=<?=$cat['categoryid']?>');void(0)" >删除</a>
+					<?php endif;?>
+					</div>
+				<a href="#cat<?=$cat['categoryid']?>" ><?=$cat['title']?></a></div>
+			<?php endforeach;?>
+	</div>
+	<br clear="all"/><br />
+	<div class="riki_title">
+		<div class="float_right"><?php if(userHelper::islogin()):?>
+			<a href="javascript:show_float_box('?m=menu&a=add_item&restaurantid=<?=$restaurantid;?>');void(0)">新建菜</a>
+			<?php endif;?></div>
+		<h3>菜谱</h3>
+	</div>
+	<div style="clear:both"></div>
+	<div >
+	<?php foreach($items as $categoryid=>$itema): ?>
+		<div style="clear:both"></div>
+		<div >
+			<span class="float_right">
+			<?php if(userHelper::islogin()):?>
+				<a href="javascript:show_float_box('?m=menu&a=add_item&restaurantid=<?=$restaurantid;?>&categoryid=<?=$categoryid?>');void(0)">新建菜</a>
+			<?php endif;?>	
+			</span>
+			<h2><a name="cat<?=$categoryid?>"><?=$cats[$categoryid]['title']?></a></h2>
+		</div>
+		<div style="clear:both"></div>
+		<?php foreach($itema as $item):?>
+		<div class="resitem"> <?=$item['title']?> ( ￥ <?=$item['price']?>)
+			<?=$item['detail']?>
+			
+			<div class="float_right">
+				点单数(<?=$item['used']?>)&nbsp;&nbsp; 
+				<?php if(userHelper::islogin()):?>
+				<a href="javascript:show_float_box('?m=menu&a=modify_item&itemid=<?=$item['itemid']?>');void(0)">修改</a>&nbsp;&nbsp; 
+				<a href="javascript:show_float_box('?m=menu&a=remove_confirm_item&itemid=<?=$item['itemid']?>');void(0)" >删除</a>
+				<?php endif;?>
+			</div>
+		</div>
+		<?php endforeach;?>
+
+	<?php endforeach;?>
+	</div>
+	</div>
+</div>
+<script>
+		$$('.rescat').addEvent( 'mouseenter' , function(){ this.setStyle('background' , '#efefef') ; } );
+		$$('.rescat').addEvent( 'mouseleave' , function(){ this.setStyle('background' , '') ; } );
+
+		$$('.resitem').addEvent( 'mouseenter' , function(){ this.setStyle('background' , '#efefef') ; } );
+		$$('.resitem').addEvent( 'mouseleave' , function(){ this.setStyle('background' , '') ; } );
+
+</script>

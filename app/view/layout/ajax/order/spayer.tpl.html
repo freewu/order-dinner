@@ -1,0 +1,27 @@
+<div class="box_title">
+    <div class="closer"><img src="static/image/cross.gif" onclick="close_float_box()" /></div>
+    <div>选择帐本</div>
+</div>
+<div class="box_container">
+<form >
+	<div>
+    <?php foreach($users as $di):?>
+		<input type="radio" name="s_userid" value="<?=$di['userid']?>" tt="<?=$di['usercn']?>(<?=$di['useren']?>)" />
+		 <?=$di['usercn']?>(<?=$di['useren']?>)&nbsp;&nbsp;
+		
+	<?php endforeach;?>
+	</div>
+    <div>
+        <input type="button" value="保存" id='savebook' />
+        <input type="button" value="关闭" onclick="close_float_box()" />
+    </div>
+</form>
+</div>
+<script language="javascript">
+$('savebook').addEvent('click',function(){
+	$('payerid').set('value',$$('input[name^="s_userid"]:checked').get('value'));
+	$('payer_txt').set('text',$$('input[name^="s_userid"]:checked').get('tt'));
+	close_float_box()
+})
+
+</script>

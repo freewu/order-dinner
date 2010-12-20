@@ -1,0 +1,30 @@
+<style >
+/* .order_status1{background:#66FF66;} */
+.order_status0{background:#FF9999;}
+</style>
+<div class="p10">
+	<div class="riki_title">
+		<div class="float_right"> </div>
+		<h4>总览</h4>
+	</div>
+	<div class="p5">
+		 <div id="calBody"></div>
+	</div>
+
+	<div>
+		<span class="order_status0"> &nbsp;&nbsp; </span> :未结算 <br />
+		<span class="order_status1"> &nbsp;&nbsp; </span> :已经结算 <br />
+	</div>
+</div>
+<script type="text/javascript" src="static/script/mooECal.js"></script>
+<script type="text/javascript" src="static/script/mecPHPPlugin.js"></script>
+<script type="text/javascript">
+
+	window.addEvent('domready',function(){
+		new mooECal({
+			calContainer:'calBody',
+			newDate:'<?=date('Y-m-d')?>',
+            feedPlugin:new mecPHPPlugin()
+		});
+	})
+</script>

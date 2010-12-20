@@ -1,0 +1,16 @@
+<div class="p10">
+	<div class="riki_title">
+	<div class="float_right"><a href="javascript:show_float_box('?m=user&a=add');void(0)">新建用户</a></div>
+	<h4>用户</h4>
+	</div>
+	<div>
+	<h3>用户列表</h3>
+	<?php foreach($users as $useri):?>
+		<div> <?=$useri['usercn']?>(<?=$useri['useren']?>)  &nbsp;&nbsp; 
+			<a href="javascript:show_float_box('?m=user&a=modify&userid=<?=$useri['userid']?>');void(0)">修改</a>&nbsp;&nbsp; 
+			<a href="javascript:show_float_box('?m=user&a=remove_confirm&userid=<?=$useri['userid']?>');void(0)" >删除</a>
+		</div>
+	<?php endforeach;?>
+	</div>
+	
+</div>

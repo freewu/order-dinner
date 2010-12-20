@@ -1,0 +1,22 @@
+<div class="box_title">
+	<div class="closer"><img src="static/image/cross.gif" onclick="close_float_box()" /></div>
+	修改订单状态
+</div>
+<div class="box_container">
+<div class="desp">
+	<p>你确定要订单 <span class="green"><?=$name?></span> 吗?</p>
+	<form id="form2" name="form2">
+	<div class="formline">
+		<label>状态:</label>&nbsp;
+		<input type="radio" name="status" value="0" <?php if($item['status']==0): ?> checked="1" <?php endif;?> /> 预算中 &nbsp;&nbsp;
+		<input type="radio" name="status" value="1" <?php if($item['status']==1): ?> checked="1" <?php endif;?> /> 完成
+	</div>
+	
+	<p class="action">
+		<input type="button" class="button" value="取消" onclick="close_float_box()"/>
+		&nbsp;&nbsp;<input type="button" class="button" value="是的" onclick="show_float_box('?m=order&a=batch_order_status&orderid=<?=$orderid?>&'+$('form2').toQueryString())" />
+	</p>
+	</form>
+</div>
+<br clear="all"/>
+</div>

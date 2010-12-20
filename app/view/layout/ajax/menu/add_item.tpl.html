@@ -1,0 +1,31 @@
+<div class="box_title">
+    <div class="closer"><img src="static/image/cross.gif" onclick="close_float_box()" /></div>
+    <div>新建菜谱</div>
+</div>
+<div class="box_container">
+<form action="?m=menu&a=save_item" id="saveitem" method="post">
+    <table>
+        <tr><th>餐厅名</th><td><?=$res['title']?> </td></tr>
+		<tr><th>分类</th><td>
+			<select name="categoryid" >
+				<?php foreach($cats as $cat):?>
+					<option value="<?=$cat['categoryid']?>" <?php if($cat['categoryid']==$categoryid):?>selected="selected"<?php endif;?> ><?=$cat['title']?></option>
+				<?php endforeach;?>
+			</select>
+		</td></tr>
+		<tr><th>菜名</th><td><input type="text" name="title" size="40" value="<?=$item['title']?>"></td></tr>
+		<tr><th>价格</th><td><input type="text" name="price" size="40" value="<?=$item['price']?>"></td></tr>
+	    <tr><th>可有</th><td><input type="checkbox" name="disable" value="1" ></td></tr>	
+        <tr><th>详细</th><td>
+            <textarea name="detail" rows="6" cols="80"><?=$item['detail']?></textarea>
+        </td></tr>
+        <tr><th></th><td></td></tr>
+    </table>
+
+    <div>
+        <input type="hidden" name="restaurantid" value="<?=$restaurantid?>" />
+        <input type="button" value="保存" onclick="send_form_pop('saveitem')" />
+        <input type="button" value="关闭" onclick="close_float_box()" />
+    </div>
+</form>
+</div>
