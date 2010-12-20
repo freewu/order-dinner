@@ -1,0 +1,18 @@
+<div class="box_title">
+    <div class="closer"><img src="static/image/cross.gif" onclick="close_float_box()" /></div>
+    <div>修改用户</div>
+</div>
+<div class="box_container">
+<form action="?m=user&a=save"  id="savebook" method="post">
+	<table>
+		<tr><th>用户拼音</th><td><input type="text" name="useren" size="40" value="<?=$item['useren']?>"></td></tr>
+		<tr><th>用户名</th><td><input type="text" name="usercn" size="40" value="<?=$item['usercn']?>"></td></tr>
+		<tr><th></th><td></td></tr>
+	</table>
+	
+	<div>
+		<input type="hidden" name="userid" size="40" value="<?=$item['userid']?>">
+		<input type="button" value="保存"  onclick="send_form_pop('savebook')">
+		<input type="button" value="关闭" onclick="close_float_box()">
+	</div>
+</form></div>

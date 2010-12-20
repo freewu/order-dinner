@@ -1,0 +1,32 @@
+<div class="p10">
+	<div class="riki_title">
+		<div class="float_right"> </div>
+		<h4><?=$title?></h4>
+	</div>
+	<div>
+	<?php foreach($workOrders as $order):?>
+		<div style="border-bottom:1px #CCC solid">
+			<a href="?m=order&a=modify&orderid=<?=$order['orderid']?>">
+				<span style="color:#0000FF; margin-left:20px; font-weight:bold"><?=$order['day']?></span>
+				<span style="color:#FF6600; margin-left:20px;font-size:12pt;font-weight:bold"> <?=$order['book_txt']?> </span>
+				<span style="color:#009933;margin-left:20px;"> <?=$order['restaurant_txt']?> </span>
+				 </a>
+			<div>
+				<span class="float_right">
+					<?php if(userHelper::islogin()):?><a href="javascript:show_float_box('?m=order&a=remove_confirm_order&orderid=<?=$order['orderid']?>');void(0)" >删除</a><?php endif;?></span>
+				<?=$order['detail_txt']?>
+			</div>
+			<div >
+				<span class="float_right"><?=$order['timeline']?></span>
+				<b>付款人</b>: <?=$order['payer_txt']?>  ;  
+				<b>数量:</b><span class="numinput" ><?=$order['itemnum']?></span>;
+				<b>类数:</b><span class="numinput" ><?=$order['quantity']?></span>;
+				<b>点单总额:</b><span class="numinput" ><?=$order['total_amount']?></span>;
+				<b>实际总额:</b><span class="numinput" ><?=$order['final_amount']?></span>;
+				
+			</div>
+			<br  clear="all" />
+		</div>
+	<?php endforeach;?>
+	</div>
+</div>

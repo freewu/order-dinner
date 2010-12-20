@@ -1,0 +1,30 @@
+<div class="box_title">
+    <div class="closer"><img src="static/image/cross.gif" onclick="close_float_box()" /></div>
+    <div>选择帐本</div>
+</div>
+<div class="box_container">
+<form action="?m=order&a=ajaxsetusers" method="post" id="form_menu">
+	<div>
+    <?php foreach($users as $di):?>
+		<input type="checkbox"  id="check_item<?=$di['userid']?>_" name="check_item[<?=$di['userid']?>]" value="<?=$di['userid']?>" tt="<?=$di['usercn']?>(<?=$di['useren']?>)" />
+		 <?=$di['usercn']?>(<?=$di['useren']?>) <br/>
+		
+	<?php endforeach;?>
+	</div>
+    <div>
+        <input type="button" value="保存" id='savebook' onclick="send_form_pop('form_menu');" />
+        <input type="button" value="关闭" onclick="close_float_box()" />
+    </div>
+</form>
+</div>
+<script language="javascript">
+window.addEvent('domready', function() {
+	for(k in resUsersDetail){
+		$('check_item'+k+'_').set('checked','checked');
+	}
+})
+
+
+
+
+</script>

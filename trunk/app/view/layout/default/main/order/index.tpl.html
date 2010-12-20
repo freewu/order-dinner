@@ -1,0 +1,201 @@
+<div class="p10">
+	<div class="riki_title">
+		<div class="float_right"> 
+			</div>
+		<h4>订单列表</h4>
+	</div>
+
+	<div>
+		<div id="mygrid" ></div>
+	</div>
+</div>
+
+<script language="javascript">
+	
+    function gridButtonClick(button, grid)
+    {
+		 if(button=='add'){
+		  	 window.open('?m=order&a=modify','_blank_modify');void(0);
+			 return 1;
+		 }else if(button=='edit'||button=='delete'||button=='tag'||button=='batchstatus'){
+		 	  var is=JSON.decode('['+grid.getSelectedIndices()+']');
+			  var selected_ids='';
+			  is.each(function(i){
+			  		var r=grid.getDataByRow(i);
+					selected_ids+=r.orderid+'_';
+			  });
+			  if(button=='edit'){
+			  	 window.open('?m=order&a=modify&orderid='+selected_ids,'_blank_modify');void(0);
+		 	  	 //show_float_box('?m=order&a=modify&ids='+selected_ids);void(0);
+			  }else if(button=='delete'){
+			  	 show_float_box('?m=order&a=remove_confirm_order&orderid='+selected_ids);void(0);
+			  }else if(button=='tag'){
+			  	 show_float_box('?m=order&a=set_tags&ids='+selected_ids);void(0);
+			  }else if(button=='batchstatus'){
+			    	show_float_box('?m=order&a=batch_confirm_order_status&orderid='+selected_ids);void(0);
+			  
+			  }
+              return 1;
+		 }
+		 
+		 alert(button);
+    }
+	
+    var cmu = [
+	        {
+               header: "ID",
+               dataIndex: 'orderid',
+               dataType:'number',
+               width:60,
+            }, 
+			{
+               header: "check",
+               dataIndex: 'orderid',
+               labelFunction: gridlablefunc,
+			   width:40,
+            }, 
+			{
+               header: "订单时间",
+               dataIndex: 'day',
+               dataType:'date',
+               width:90
+            },
+            {
+               header: "状态",
+               dataIndex: 'status_txt',
+               dataType:'string',
+               width:90
+            },
+            {
+               header: "实际总额",
+               dataIndex: 'final_amount',
+               dataType:'string',
+               width:60
+            },
+			{
+               header: "点单总额",
+               dataIndex: 'total_amount',
+               dataType:'number',
+               width:60
+            },
+			
+			
+			{
+               header: "数量",
+               dataIndex: 'itemnum',
+               dataType:'number',
+               width:60
+            },
+			{
+               header: "类数",
+               dataIndex: 'quantity',
+               dataType:'string',
+               width:60
+            },
+			{
+               header: "帐本",
+               dataIndex: 'book_txt',
+               dataType:'string',
+               width:100
+            },
+            {
+               header: "餐厅",
+               dataIndex: 'restaurant_txt',
+               dataType:'string',
+               width:100
+            },
+            {
+               header: "付款人",
+               dataIndex: 'payer_txt',
+               dataType:'string'
+            }
+            ];	
+    
+    window.addEvent("domready", function(){
+	                
+	    datagrid = new omniGrid('mygrid', {
+	        columnModel: cmu,
+	        buttons : [
+	          <?php if(userHelper::islogin()):?>
+	          {name: 'Add', bclass: 'add', onclick : gridButtonClick},
+	          {name: 'Delete', bclass: 'delete', onclick : gridButtonClick},
+	          {separator: true},
+	          {name: 'Edit', bclass: 'edit', onclick : gridButtonClick},
+	          {name: '状态', bclass: 'batchstatus', onclick : gridButtonClick},
+	          <?php endif;?>
+			  {name: 'Tag', bclass: 'tag', onclick : gridButtonClick}
+			  
+	        ],
+	        url:"?m=order&a=ajaxlist&",
+	        perPageOptions: [20,50,100,200],
+	        perPage:20,
+	        page:1,
+	        pagination:true,
+	        serverSort:true,
+	        showHeader: true,
+	        alternaterows: true,
+	        showHeader:true,
+	        sortHeader:true,
+	        resizeColumns:false,
+	        multipleSelection:true,
+	        
+	        // uncomment this if you want accordion behavior for every row
+	        accordion:true,
+	        accordionRenderer:accordionFunction,
+	        /*
+	        
+	        autoSectionToggle:false,
+	        */
+			//width:600;	
+	        height: 500,
+	    });
+	    
+	    datagrid.addEvent('click', onGridSelect);
+	    datagrid.addEvent('dblclick', onGriddblclick);
+     });
+	
+	function accordionFunction(obj)
+	{
+		var d=obj.grid.getDataByRow(obj.row);
+		obj.parent.set('html', '<div> <div style="width:200px;float:left" class="p5">  '+d.detail_txt+'</div><textarea style="width:300px;height:200px;float:left"  calss="p5"> '+d.mark+'</textarea></div>');
+		
+	}
+	
+	function onGridSelect(evt)
+    {
+         var str = 'row: '+evt.row+' indices: '+evt.indices;
+         str += ' id: '+evt.target.getDataByRow(evt.row).orderid;
+///		 alert(evt.target.selected.indexOf(0)+ ' '+evt.target.selected);
+		 $(evt.element).getParent().getElements('input[name^=orderid_check]').each(function(e){
+		 	 if(evt.target.selected.indexOf(e.get('rel_row').toInt())>=0){
+        	 	e.set('checked','checked'); 
+			 }else{
+			 	e.set('checked','');
+			 }
+		 })
+		 
+
+		 
+		 //.getChildren('input[name^=orderid_check]'));
+//		 $$('input[name=orderid_check\['+evt.row+'\]]').set('checked','checked');
+//alert(JSON.encode(evt.target.getLiParent(evt.row)));
+        // alert(JSON.encode( 		 $('orderid_check_'+evt.row)));
+//         alert( str ); .getChildren('input[name^=]')
+    }
+
+    function onGriddblclick(evt)
+    {
+	  	 window.open('?m=order&a=modify&orderid='+evt.target.getDataByRow(evt.row).orderid,'_blank_modify');void(0);
+    }
+
+	 function gridlablefunc(data, row, colmod){
+		 var r='<input type=checkbox name=orderid_check['+row+'] value="'+data.orderid+'" rel_row='+row+' />';
+/*		 if(t=d.tags){
+			 r+= '<img class="tag_'+t+'" src="static/image/transparent.gif"/>';
+		 }
+		 */
+		 return r;
+		 //(function(data, row, colmod){return  '<input type=checkbox name=orderid_check['+data.orderid+'] value='+data.orderid+' />' +data.orderid; }),
+	 }
+	 
+</script>

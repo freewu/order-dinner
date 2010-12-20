@@ -1,0 +1,52 @@
+<div class="p10">
+	<div class="riki_title">
+		
+		<h4>搜索</h4>
+	</div>
+	<div>
+		<form action="" method="post" id="form1" > 
+		<div class="formline">
+			<b>选择日期:</b><br>
+			从:
+			 <input type="text" name="fromdate" id="fromdate" value="<?=$fromdate?>" style="width:80px"/>
+			<span ></span>&nbsp;
+			到:
+			 <input type="text" name="todate" id="todate" value="<?=$todate?>" style="width:80px"/>
+			 
+		</div>
+		<div class="formline">
+			<b>帐本:</b><br>
+			<?php foreach($books as $book):?>
+				<input type="checkbox" name="check_bookid[]" value="<?=$book['bookid']?>" /> <?=$book['title']?>  &nbsp;&nbsp;&nbsp;&nbsp;
+			<?php endforeach;?>
+		</div>
+		<div class="formline">
+			<b>餐厅:</b><br>
+			<?php foreach($res as $resi):?>
+				<input type="checkbox" name="check_restaurantid[]" value="<?=$resi['restaurantid']?>" /> <?=$resi['title']?>  &nbsp;&nbsp;&nbsp;&nbsp;
+			<?php endforeach;?>
+		</div>
+		
+		<div>
+			<select name="status">
+				<option value="" >是否结算</option>
+				<option value="0" <?php if($status=='0'):?> selected='true'<?php endif; ?> >未结算</option>
+				<option value="1" <?php if($status=='1'):?> selected='true'<?php endif; ?>>已结算</option>
+			</select>
+			<input type="button" value="查" onclick="form1_submit()" />  
+		</div>
+	</form>
+	</div>
+	
+
+</div>
+<script >
+var fromdate=new DatePicker($('fromdate'),{'format':'Y-m-d',inputOutputFormat: 'Y-m-d'});
+var todate=new DatePicker($('todate'),{'format':'Y-m-d',inputOutputFormat: 'Y-m-d'});
+function form1_submit(){
+ 	//alert($('ajaxorderlist_pms').get('value') +'          '+$('form1').toQueryString() );
+ 	datagrid.options.url="?m=order&a=ajaxlist&"+$('form1').toQueryString();
+ 	datagrid.refresh();
+}
+  
+</script>

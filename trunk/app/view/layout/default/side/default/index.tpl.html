@@ -1,0 +1,7 @@
+<div>
+	<h3>常用帐本</h3>
+	<?php foreach($books as $booki):?>
+		<div><a href="?m=books&a=view&bookid=<?=$booki['bookid']?>"><?=$booki['title']?></a></div>
+	<?php endforeach;?>
+
+</div>

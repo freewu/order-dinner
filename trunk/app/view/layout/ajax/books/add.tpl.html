@@ -1,0 +1,21 @@
+<div class="box_title">
+	<div class="closer"><img src="static/image/cross.gif" onclick="close_float_box()" /></div>
+	新建帐本
+</div>
+<div class="box_container">
+<form action="?m=books&a=save"  id="savebook" method="post">
+	<table>
+		<tr><th>帐本名</th><td><input type="text" name="title" size="40" value=""></td></tr>
+		<tr><th>详细</th><td>
+			<textarea name="detail" rows="6" cols="80"></textarea>
+		</td></tr>
+		<tr><th></th><td></td></tr>
+	</table>
+	
+	<div>
+		<input type="button" value="保存"  onclick="send_form_pop('savebook')">
+		<input type="button" value="关闭" onclick="close_float_box()">
+	</div>
+</form>
+</div>
+<br clear="all"/>
