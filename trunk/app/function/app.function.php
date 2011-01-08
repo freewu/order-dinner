@@ -26,7 +26,20 @@
         }
         return $sql.' set '.rtrim($sql_set,',').' Where '.rtrim($sql_where,'And ');
     }
-
+    /****
+     * 建立目录
+     */ 
+    function cmkdir($d){
+    	if(is_file($d)){
+    		return 0;
+    	}
+    	if(!is_dir($d)){
+    		cmkdir(dirname($d)); // 上归一层
+    		mkdir($d);
+    	}else{
+    		return 1;
+    	}
+    }
     class orderHelper{
       public static $items;
       //取一行订单的文字　信息
