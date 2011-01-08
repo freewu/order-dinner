@@ -56,7 +56,7 @@ CREATE TABLE 'orders' (orderid integer primary key, bookid integer, restaurantid
 DROP TABLE 'items';
 CREATE TABLE 'items' (itemid integer primary key, restaurantid varchar(200), title varchar(200), categoryid integer, price double, disable integer, detail text, used int(10), gooded int(10), baded int(10));
 
-Insert into users (useren,usercn,password,level)values('b2b','b2b','06fd91ea1303160d0272bf941ffbc4f4',255);
+Insert into users (useren,usercn,password,level)values('admin','admin','21232f297a57a5a743894a0e4a801fc3',255);
 COMMIT;
 EOF;
 $sql_r=explode(';',$sql);
@@ -67,7 +67,7 @@ foreach($sql_r as $sql){
 }
 sqlite_close($db);
 
-echo "<h1>Install success!</h1> <br> <font color=#FF0000>Please Delete this file! </font> <br> <a href='index.php'>Go Home !</a> <br>b2b:2b2";
+echo "<h1>Install success!</h1> <br> <font color=#FF0000>Please Delete this file! </font> <br> <a href='index.php'>Go Home !</a> <br>admin:admin";
 }catch(Exception $e){
   echo  "Install End with : ".$e->getMessage(). "\r\n<br> ";
 }
