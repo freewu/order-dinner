@@ -25,6 +25,16 @@ class eventfeedMod extends coreMod
                 'location'=>''
               );
         }
+        $ejobs=get_data("select * from jobs where endtime>'$startDate' And endtime<'$endDate'  order by endtime desc ");
+        foreach($ejobs as $d){
+             $eData=jobHelper::getJobTxt($d); 
+             $rData[]=array(
+                'title'=>'<span class=order2_status'.(int)$eData['status'].' ><a href=?m=addme&a=viewjob&jobid='.$eData['jobid'].'>'.$eData['book_txt'].'</a></span>',
+                'start'=> $eData['endtime'],
+                'end'=>$eData['endtime'],
+                'location'=>''
+             );
+        }
         echo json_encode($rData);
         die();
 

@@ -7,8 +7,10 @@
 	<h3>用户列表</h3>
 	<?php foreach($users as $useri):?>
 		<div> <?=$useri['usercn']?>(<?=$useri['useren']?>)  &nbsp;&nbsp; 
-			<a href="javascript:show_float_box('?m=user&a=modify&userid=<?=$useri['userid']?>');void(0)">修改</a>&nbsp;&nbsp; 
-			<a href="javascript:show_float_box('?m=user&a=remove_confirm&userid=<?=$useri['userid']?>');void(0)" >删除</a>
+			<?php if(userHelper::islogin(64)):?>
+				<a href="javascript:show_float_box('?m=user&a=modify&userid=<?=$useri['userid']?>');void(0)">修改</a>&nbsp;&nbsp; 
+				<a href="javascript:show_float_box('?m=user&a=remove_confirm&userid=<?=$useri['userid']?>');void(0)" >删除</a>
+			<?php endif;?>
 		</div>
 	<?php endforeach;?>
 	</div>

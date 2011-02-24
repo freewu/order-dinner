@@ -1,4 +1,4 @@
-<div class="p10">
+<div class="p10 float_left" style="width:400px">
 <div class="riki_title">
 	<h4>登录</h4>
 </div>
@@ -14,4 +14,25 @@
 	</form>
 	
 </div>	
+
+</div>
+<div class="p10 float_left" style="width:400px">
+<div class="riki_title">
+	<h4>注册</h4>
+</div>
+<br/>
+<div class="p10">
+	<form action="?m=user&a=reg_check" method="post" id="form_reg">
+	用户名:<br/>
+	<input type="text" name="useren" class="text" /><br/><br/>
+	用户真实姓名:<br/>
+	<input type="text" name="usercn" class="text" /><br/><br/>
+	密码:<br/>
+	<input type="password" name="password" class="text" disabled="disabled" /> 注册普通用户不可设密码 <br/>
+	<br/>
+	<input type="button" onclick="send_form_pop('form_reg');" value="注册" class="button"/>
+	</form>
+	
+</div>	
+
 </div>

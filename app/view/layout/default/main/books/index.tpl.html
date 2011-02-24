@@ -7,8 +7,10 @@
 	<h3>帐本列表</h3>
 	<?php foreach($books as $booki):?>
 		<div> <?=$booki['title']?> <a href="?m=books&a=view&bookid=<?=$booki['bookid']?>">查看</a> &nbsp;&nbsp; 
+			<?php if(userHelper::islogin(64)):?>
 			<a href="javascript:show_float_box('?m=books&a=modify&bookid=<?=$booki['bookid']?>');void(0)">修改</a>&nbsp;&nbsp; 
 			<a href="javascript:show_float_box('?m=books&a=remove_confirm&bookid=<?=$booki['bookid']?>');void(0)" >删除</a>
+			<?php endif;?>
 		</div>
 	<?php endforeach;?>
 	</div>

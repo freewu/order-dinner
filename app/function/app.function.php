@@ -1,6 +1,19 @@
 <?php
 
-
+    /**
+     *  时间 差
+     */         
+    function timediff($t){
+        $d= floor($t/86400);
+        $t= $t%86400;
+        $h=floor($t/3600);
+        $t=$t%3600;
+        $i=floor($t/60);
+        $s=$t%60;
+        
+        return $d.' 天 '.$h .' 小时 ' .$i.' 分钟 '.$s.' 秒';
+    }   
+         
     function sql_insert($table,$data){
         $sql="Insert into $table ";
         $sql_keys='';
@@ -103,8 +116,51 @@
 
       }
     }
+    
+    class jobHelper{
+      public static $items;
+      //取一行订单的文字　信息
+      static function getJobTxt($oitem){
+        if(!is_array($oitem)) return false;
+//             if($oitem['status']==1){
+//                   $oitem['status_txt']='已结算';
+//             }else{
+//                 $oitem['status_txt']='预算中';
+//             }
+            $oitem['book_txt']=get_var('select title from books where bookid='.$oitem['bookid']);
+//            $oitem['payer_txt']=$payer['usercn'].','.$payer['useren'];
+            $restaurant=get_line('select * from restaurants where restaurantid='.$oitem['restaurantid']);
+            $oitem['restaurant_txt']=$restaurant['title'].','.$restaurant['tel'];
+         return $oitem;   
+      }
+    
+
+      static function getUserTxt($oUsers){
+         $usersData=self::getUsers();
+         $rUsers='';
+         foreach($oUsers as $userid){
+            //$oUsers[$userid]=$usersData[$userid];
+            $rUsers.=$usersData[$userid]['usercn']."(".$usersData[$userid]['useren'].")"." ;";
+         }
+         return $rUsers;
+      }
+
+      static function getUsers($oUsers){
+         $users=get_data('select * from users ');
+         $usersData=array();
+         foreach($users as $k=>$userItem){
+            $usersData[$userItem['userid']]=$userItem;
+         }
+         unset($users);
+         return $usersData;
+
+      }
+    }
+    
     /***
      * 用户登录相关
+     * level : 1 普通用户
+     *         64 超级管理员             
      */
     class userHelper{
         //是否登录 并有权限

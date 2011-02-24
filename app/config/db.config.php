@@ -1,0 +1,1 @@
+<?php $GLOBALS['config']['db']['file_name'] ='db/dinner.db';?>

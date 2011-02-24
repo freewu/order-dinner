@@ -446,7 +446,7 @@ a.riki_active
 
 .resitem_s
 {
-	width:170px;
+	width:180px;
 	padding:2px 4px;
 	margin:2px 4px;
 	border-bottom:1px solid #d8d8d8;
@@ -456,6 +456,18 @@ a.riki_active
 
 .numinput{
 	color:#F00;
+	font-weight:bold;
+	font-size:12pt;
+	width:2px;
+}
+
+.all_checked_item{
+	color:#0CF;
+	font-weight:bold;
+}
+
+.timeinput{
+	color:#090;
 	font-weight:bold;
 	font-size:12pt;
 	width:2px;

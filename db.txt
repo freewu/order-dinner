@@ -1,12 +1,3 @@
--- SQLiteFront SQL Dump
--- version 0.5.1
-
--- Database: /db/dinner.db
--- SQLite version: 2.8.17
--- PHP version: 5.2.6
--- Date: 2010-12-19 09:44
-
-
 BEGIN TRANSACTION;
 
 
@@ -54,3 +45,26 @@ CREATE TABLE 'orders' (orderid integer primary key, bookid integer, restaurantid
 DROP TABLE 'items';
 CREATE TABLE 'items' (itemid integer primary key, restaurantid varchar(200), title varchar(200), categoryid integer, price double, disable integer, detail text, used int(10), gooded int(10), baded int(10));
 COMMIT;
+
+-- Schema from jobitems
+
+DROP TABLE 'jobitems';
+CREATE TABLE 'jobitems' (id integer primary key, jobid integer, itemid integer(8), userid int(10), num integer(4), timeline datetime);
+
+
+-- Schema from jobs
+
+DROP TABLE 'jobs';
+create table jobs(
+jobid integer primary key,
+bookid integer(8),
+restaurantid integer(8),
+title varchar(200),
+endtime datetime,
+status integer(4),
+version integer(4),
+itemnum integer(8), 
+quantity integer(8),
+final_amount decimal(10,3),
+mark text
+);

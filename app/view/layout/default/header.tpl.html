@@ -2,7 +2,7 @@
 <div id="top_nav">
 <div id="settings">
 	 <?php if(userHelper::islogin()):?>
-	 	<a href="?m=user&a=logout">登出</a> | <a href="?m=user">人员</a> | <a href="?m=books">帐本</a>
+	 	<?=ss('usercn').'['.ss('useren').']' ?> &nbsp; <a href="?m=user&a=logout">登出</a> | <a href="?m=user">人员</a> | <a href="?m=books">帐本</a>
 	 <?php else:?>	
 	 	<a href="?m=user&a=login">登录</a>
 	 <?php endif;?>

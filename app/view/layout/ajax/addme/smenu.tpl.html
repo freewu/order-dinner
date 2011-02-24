@@ -1,0 +1,138 @@
+<div class="box_title" >
+    <div class="closer"><img src="static/image/cross.gif" onclick="close_float_box()" /></div>
+    <div>选择菜谱</div>
+</div>
+<div class="box_container">
+	<div class="riki_title">
+			<b>餐厅详细</b>
+			<?=$res['title']?>,<?=$res['tel']?>,<?=$res['addr']?>,<?=$res['boss']?>
+	</div>
+	<div class="riki_title">
+		<b>菜谱</b>
+	</div>
+<form action="?m=addme&a=ajaxsetmenu" method="post" id="form_menu">
+	<div >
+		<?php foreach($items as $categoryid=>$itema): ?>
+			<div style="clear:both"></div>
+			<div >
+				<b><?=$cats[$categoryid]['title']?></b>
+			</div>
+			<div style="clear:both"></div>
+			<?php foreach($itema as $item):?>
+			<div class="resitem_s"> 
+				<div class="float_right"  >
+					<div style="clear:both">
+					(<?=$item['used']?>)
+					<input type="checkbox" class='check_item' id="check_item<?=$item['itemid']?>_" name="check_item[<?=$item['itemid']?>]" value="<?=$item['itemid']?>" v_price="<?=$item['price']?>"  />
+					<input type="text" class="setnum_item" id="setnum_item<?=$item['itemid']?>_" name="setnum_item[<?=$item['itemid']?>]" value="1" size="2" style="width:18px"/>
+	</div>
+				</div>
+				<?=$item['title']?> ( ￥ <?=$item['price']?>)			
+				<span id="all_checked_item<?=$item['itemid']?>_" class="all_checked_item" ></span>
+			</div>
+			<?php endforeach;?>
+		<?php endforeach;?>
+	</div>
+	<div style="clear:both"></div>
+	<div id="showTotalRealtime" style="float:right">
+		时间 :<span id="selectedmenu_timeleft" class="timeinput"> </span>
+		<div>
+			<span>全部总数：</span><span id="showAllTotalRealtime_num" class="numinput">0</span> 
+			<span>全部总类数：</span><span id="showAllTotalRealtime_numcats" class="numinput">0</span> 
+		</div>
+		<div>
+			<span>总数：</span><span id="showTotalRealtime_num" class="numinput">0</span> 
+			<span>总类数：</span><span id="showTotalRealtime_numcats" class="numinput">0</span> 
+			<span>总价：</span><span id="showTotalRealtime_amout" class="numinput">0</span> 
+		</div>
+	</div>
+    <div>
+		<input type="hidden" id="restaurantid" name="restaurantid" value="<?=$res['restaurantid']?>" />
+		<input type="hidden" name="jobid" value="<?=$jobdata['jobid']?>" />
+        <input type="button" value="       保存      " id='savebook' onclick="send_form_pop('form_menu');" />
+        <input type="button" value="    关闭    " onclick="close_float_box()" />
+    </div>
+</form>
+</div>
+<script language="javascript">
+$$('.check_item').addEvent('click',function(){
+	var Enum=this.getNext();
+	var divItem=this.getParents('.resitem_s');
+	if(this.checked){
+		Enum.setStyle('display','');
+		divItem.setStyles({'color':'#c60'});
+	}else{
+		Enum.setStyle('display','none');
+		divItem.setStyles({'color':''});
+	}
+	disheAmout();
+})
+$$('.resitem_s').addEvent( 'mouseenter' , function(){if(this.getStyle('background')=='') this.setStyle('background' , '#efefef') ; } );
+$$('.resitem_s').addEvent( 'mouseleave' , function(){ if(this.getStyle('backgroundColor')=='#efefef') this.setStyle('background' , '') ;} );
+
+function disheAmout(){
+
+        var amount=0;
+        var num=new Number(0);
+		var numcats= new Number(0);
+        var menuTxt='';
+        $$('input[name^="check_item"]').each(function(e){
+            if(e.checked){
+                //add num
+                itemnum=new Number(e.getNext().get('value'));
+                num+=itemnum;
+				numcats+=1;
+                amount+=e.get('v_price').toFloat()*itemnum;
+                //menuTxt+=e.get('dishe')+' X '+itemnum+' , ';
+            }
+        });
+        $('showTotalRealtime_num').set('html',num);
+		$('showTotalRealtime_numcats').set('html',numcats);
+        $('showTotalRealtime_amout').set('html',amount);
+}
+
+/**  显示全部的选择项  **/
+function setAllMenuDetail(data){
+	var num=new Number(0);
+	var numcats= new Number(0);
+	$$('.all_checked_item').each(function(e){
+		e.set('text','');
+	})
+    for(k in resAllMenuDetail){
+		//$('check_item'+k+'_').getParents('.resitem_s').setStyles({'border':'#F99 1px solid'});
+		$('check_item'+k+'_').getParents('.resitem_s').setStyles({'background':'#9FF'});
+		$('all_checked_item'+k+'_').set('text', '['+resAllMenuDetail[k]+']');
+		numcats+=1;
+		num+=resAllMenuDetail[k];
+	}
+	
+	if(data.timeleft==0){
+		$('savebook').set('disabled','true');
+		$('selectedmenu_timeleft').set('text','结束');
+	}else{
+		$('savebook').set('disabled','');
+		$('selectedmenu_timeleft').set('text',data.timeleft);
+	}
+	
+    $('showAllTotalRealtime_num').set('html',num);
+	$('showAllTotalRealtime_numcats').set('html',numcats);
+}
+
+window.addEvent('domready', function() {
+	$('riki_float_box').setStyle('width',document.body.scrollWidth-80);
+	$$('.setnum_item').setStyle('display','none');
+	for(k in resMenuDetail){
+		$('check_item'+k+'_').set('checked','checked');
+		$('setnum_item'+k+'_').set('value',resMenuDetail[k]);
+		$('setnum_item'+k+'_').setStyle('display','');
+		$('check_item'+k+'_').getParents('.resitem_s').setStyles({'color':'#c60'});
+	}
+	disheAmout();
+	//setAllMenuDetail();
+	jobinfotimeline();
+})
+
+
+
+
+</script>

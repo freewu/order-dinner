@@ -94,13 +94,13 @@ class userMod extends appMod
 	public function login_check()
 	{
 		if( !v('user') ) return ajax_box('用户名不能为空');
-		if( !v('password') ) return ajax_box('密码不能为空');
-
 		$user = z(v('user'));
-		$password = md5(z(v('password')));
-
-		if( $user = get_line("SELECT * FROM users WHERE useren = '" . s($user) . "' AND password = '" . s( $password ) . "' LIMIT 1") )
+		if( $user = get_line("SELECT * FROM users WHERE useren = '" . s($user) . "' LIMIT 1") )
 		{
+		  if($user['password']){
+		      if( !v('password') ) return ajax_box('密码不能为空');
+          if($user['password']!=md5(z(v('password')))) return ajax_box('密码不正确'); 
+      }
 			$_SESSION['userid'] = $user['userid'];
 			$_SESSION['useren'] = $user['useren'];
 			$_SESSION['usercn'] = $user['usercn'];
@@ -110,6 +110,32 @@ class userMod extends appMod
 		}
 		else
 			return ajax_box('用户名或者密码错误,请重试');
+	}
+	
+	public function reg_check()
+	{
+		if( !v('useren') || !v('usercn') ) return ajax_box('用户名不能为空');
+		$useren = z(v('useren'));
+		$usercn = z(v('usercn'));
+		if( $user = get_line("SELECT * FROM users WHERE useren = '" . s($useren) . "'  LIMIT 1") ){
+		    return ajax_box('用户名已经被注册');
+		}else{
+		    $user=array(
+            'useren'=>$useren,
+            'usercn'=>$usercn,
+            'level'=>1,
+        );
+		    run_sql(sql_insert('users',$user));
+		    
+   			$_SESSION['userid'] = last_id();
+  			$_SESSION['useren'] = $user['useren'];
+  			$_SESSION['usercn'] = $user['usercn'];
+  			$_SESSION['level'] = $user['level'];
+  
+  			return ajax_box( '欢迎您 ,' . $user['usercn'] . ' 注册成功.正在转向' , NULL , 0.5 , '?m=default' );
+
+    }
+
 	}
 }
 

@@ -1,0 +1,216 @@
+<style>
+.divViewContent{
+	width:290px;
+	padding:8px;
+	margin:4px;
+	overflow:hidden;
+	float:left;
+}
+.divViewContent ul{
+	padding:0 20px;
+	margin:0px;
+}
+.divViewContent li{
+	list-style-type:square;
+}
+.divViewContent li li{
+	list-style-type:circle;
+}
+
+</style>
+<div class="p10">
+	<div class="riki_title">
+	<div class="float_right">
+		
+	</div>
+	<h4>点餐活动</h4>
+	</div>
+	<div class="formline" style="color:red">
+		 <label>您的用户名</label>: <b><?=ss('usercn');?></b>
+	</div>
+	<div class="formline">
+		<label>时间</label> :  剩余时间 : <span id="timeleft" class="timeinput"> </span>    到期时间: <span id="endtime" class="timeinput"> <?=$jobdata['endtime']?></span>  
+	</div>
+	<div class="formline">
+		<label>餐厅</label>
+		<?=$jobdata['restaurant_txt']?>
+	</div>
+	<div class="formline">
+		<label>帐本</label>
+		<?=$jobdata['book_txt']?>
+	</div>
+	<div class="formline">
+        <label>标题</label> &nbsp;
+        <?=$jobdata['title']?>
+    </div>
+	<div class="formline">
+        <label>备注</label> &nbsp;
+        <?=$jobdata['mark']?>
+    </div>
+    <div class="formline">
+        <label>总共</label>
+        <div  id="divstatistics"> 
+                         全部总类数：
+            <?if($jobdata['quantity']){echo $jobdata['quantity'];}else{echo 0;}?> 
+                         全部总数：
+            <?if($jobdata['itemnum']){echo $jobdata['itemnum'];}else{echo 0;}?>
+                         总价：
+            <?if($jobdata['final_amount']){echo $jobdata['final_amount'];}else{echo 0;}?>
+        </div>
+    </div>
+	<input type="hidden" id="jobid" name='jobid' value="<?=$jobdata['jobid']?>">
+	<input type="hidden" id="version" name='version' value="<?=$jobdata['version']?>">
+
+	
+	<div class="formline">
+		<div class="float_right">
+		<a href="javascript:show_float_box('?m=addme&a=smenu&jobid=<?=$jobdata['jobid']?>');void(0)" style="margin-left:100px">点菜</a>
+		</div>
+		<label>您所点的菜</label>
+	 	 	<br />
+	 	 	<div id='divmeitems'>
+	 	 	</div>
+	 	
+	</div>
+	
+	
+	
+	<div class="p5">
+		
+	 	<div class="p5 divViewContent">
+	 	 	<div class="riki_title"><h6>按参与人</h6></div> <br />
+	 	 	<div id='divuseritems' class="p5">
+	 	 	</div>
+	 	</div>
+	 	
+	 	<div class="p5 divViewContent">
+	 		<div class="riki_title"><h6>按所点的菜</h6></div> <br />
+	 	 	<div id='divmenuitems' class="p5" >
+	 	 	</div>
+	 	</div>
+	 	<div class="p5 divViewContent">
+	 		<div class="riki_title"><h6>总菜单</h6></div> <br />
+	 	 	<div id='divallmenuitems' class="p5">
+	 	 	</div>
+	 	</div>
+	</div>
+
+</div>
+<script>
+var resMenuDetail=[];
+var resAllMenuDetail=[];
+function setMenuItemText(type,data){
+	switch(type){
+		case 'meitems':
+				//alert(JSON.encode(data));
+				var txt='<ul>';
+				for(k in data){
+					txt+=data[k]['title']+' X '+data[k]['num']+'<br>';
+				}
+				$('div'+type).set('html',txt);
+			break;
+		case 'useritems':
+				var txt='<ul>';
+				//alert(JSON.encode(data));
+				for(k in data){
+					txt+='<li>'+data[k]['uname']+' <ul> ';
+						for(k2 in data[k]['menuA']){
+							
+							txt+='<li>'+data[k]['menuA'][k2]['title']+' X '+data[k]['menuA'][k2]['num']+'</li>';
+						}
+					txt+='</ul> </li>';
+				}
+				 txt+='</ul>';
+				$('div'+type).set('html',txt);
+			break;
+		case 'menuitems':
+				var txt='<ul>';
+				for(k in data){
+					txt+='<li>'+data[k]['menu']+' <ul>';
+						for(k2 in data[k]['uA']){
+							txt+='<li>'+data[k]['uA'][k2]['uname']+' X '+data[k]['uA'][k2]['num']+'</li>';
+						}
+					txt+='</ul> </li>';
+				}
+				txt+='</ul>';
+				$('div'+type).set('html',txt);
+			break;
+		case 'allmenuitems':
+				var txt='<ul>';
+				for(k in data){
+					txt+='<li>'+data[k]['menu']+' X '+data[k]['tnum']+'</li>';
+				}
+				txt+='</ul>';
+				$('div'+type).set('html',txt);
+			break;
+		case 'statistics':
+            var txt='全部总类数：'+data[1]+'全部总数：'+data[2]+'总价：'+data[0];
+            $('div'+type).set('html',txt);
+        break;
+	};
+
+
+	//for(k in data){
+		//alert(JSON.encode(data[k]));
+		//$('div'+type).set('text',);
+//	}
+
+}
+
+function jobinfotimeline(){
+    var myRequest = new Request({
+        url: '?m=addme&a=ajaxjobtime',
+		method: 'get', 
+		onComplete:function(){
+			var request=JSON.decode(this.response.text);
+			$('endtime').set('text',request.endtime);
+			if(request.timeleft==0){
+				$('timeleft').set('text','结束');
+			}else{
+				$('timeleft').set('text',request.timeleft);
+			}
+			
+			if(request.gfinal_amount){
+                var statistics=new Array()
+                statistics[0]=request.gfinal_amount;
+                statistics[1]=request.gquantity;
+                statistics[2]=request.gitemnum;
+                setMenuItemText('statistics',statistics);
+            }
+			
+			if(request.gmemenu){
+				setMenuItemText('meitems',request.gmemenu);
+			}
+			
+			if(request.guser){
+				setMenuItemText('useritems',request.guser);
+			}
+			
+			if(request.gmenu){
+				setMenuItemText('menuitems',request.gmenu);
+				setMenuItemText('allmenuitems',request.gmenu);
+			}
+			if(request.resMenuDetail){
+				resMenuDetail=request.resMenuDetail;
+			}
+			if(request.resAllMenuDetail){
+				resAllMenuDetail=request.resAllMenuDetail;
+			}
+			if(typeof(setAllMenuDetail)=='function'){
+				setAllMenuDetail(request);
+			}
+		}
+		
+	}).send('jobid='+$('jobid').get('value')+'&version='+$('version').get('value'));
+}
+window.setInterval(jobinfotimeline, 1000);
+
+window.addEvent('domready', function() {
+	setMenuItemText('meitems',<?=json_encode($gmemenu);?>);
+	setMenuItemText('useritems',<?=json_encode($guser);?>);
+	setMenuItemText('menuitems',<?=json_encode($gmenu);?>);
+	setMenuItemText('allmenuitems',<?=json_encode($gmenu);?>);
+	resMenuDetail=<?=json_encode($resMenuDetail);?>;
+	resAllMenuDetail=<?=json_encode($resAllMenuDetail);?>;
+});
+</script>
