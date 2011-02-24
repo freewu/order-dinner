@@ -8,6 +8,7 @@ $GLOBALS['config']['menu'] = $menu;
 
 $tab = array();
 $tab[] = array( 'm'=>'default' , 'a'=>'' , 't'=>'近况' );
+$tab[] = array( 'm'=>'addme' , 'a'=>'' , 't'=>'参与 +1' );
 $tab[] = array( 'm'=>'statistic' , 'a'=>'' , 't'=>'统计' );
 $tab[] = array( 'm'=>'menu' , 'a'=>'' , 't'=>'菜谱' );
 $tab[] = array( 'm'=>'order' , 'a'=>'' , 't'=>'订单' );

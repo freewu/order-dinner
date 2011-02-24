@@ -1,0 +1,27 @@
+<div class="box_title">
+    <div class="closer"><img src="static/image/cross.gif" onclick="close_float_box()" /></div>
+    <div>选择餐厅</div>
+</div>
+<div class="box_container">
+<form >
+	<div>
+    <?php foreach($list as $di):?>
+		<input type="radio" name="s_restaurantid" value="<?=$di['restaurantid']?>" tt="<?=$di['title']?>" />
+		 <?=$di['title']?> &nbsp;&nbsp;
+		
+	<?php endforeach;?>
+	</div>
+    <div>
+        <input type="button" value="保存" id='savebook' />
+        <input type="button" value="关闭" onclick="close_float_box()" />
+    </div>
+</form>
+</div>
+<script language="javascript">
+$('savebook').addEvent('click',function(){
+	$('restaurantid').set('value',$$('input[name^="s_restaurantid"]:checked').get('value'));
+	$('restaurant_txt').set('text',$$('input[name^="s_restaurantid"]:checked').get('tt'));
+	close_float_box()
+})
+
+</script>
